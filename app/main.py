@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 
-from app.schema import UserCreate
+from app.schemas import UserCreate
 
 app = FastAPI(title ="Lab 1 - FastAPI user API")
 
@@ -11,7 +11,7 @@ def health():
 
 @app.get("/hello")
 def hello():
-    return{"message": "Some message"}
+    return {"message": "Hello from FastAPI"}
 
 
 
