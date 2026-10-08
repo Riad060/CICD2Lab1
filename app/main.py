@@ -6,7 +6,6 @@ from app.database import engine, get_db
 from app.models import Base, UserDB
 from app.schemas import UserCreate, UserRead
 
-
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Lab 3 - FastAPI SQLAlchemy User API")
@@ -48,3 +47,18 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
            detail="User not found",
        )
    return db_user
+
+@app.delete(
+   "/api/users/{user_id}",
+   status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+   db_user = db.get(UserDB, user_id)
+   if db_user is None:
+       raise HTTPException(
+           status_code=status.HTTP_404_NOT_FOUND,
+           detail="User not found",
+       )
+   db.delete(db_user)
+   db.commit()
+   return
